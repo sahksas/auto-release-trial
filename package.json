@@ -1,0 +1,99 @@
+{
+  "name": "auto-release-trial",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:sahksas/auto-release-trial.git",
+  "author": "sahksas <baku@baku.world>",
+  "release": {
+    "plugins": [
+      [
+        "@semantic-release/commit-analyzer",
+        {
+          "preset": "conventionalcommits",
+          "releaseRules": [
+            {
+              "type": "feat",
+              "release": "minor"
+            },
+            {
+              "type": "fix",
+              "release": "patch"
+            },
+            {
+              "type": "BREAKING CHANGE",
+              "release": "major"
+            },
+            {
+              "type": "major",
+              "release": "major"
+            },
+            {
+              "type": "minor",
+              "release": "minor"
+            },
+            {
+              "type": "patch",
+              "release": "patch"
+            },
+            {
+              "type": "メジャー",
+              "release": "major"
+            },
+            {
+              "type": "マイナー",
+              "release": "minor"
+            },
+            {
+              "type": "パッチ",
+              "release": "patch"
+            },
+            {
+              "message": ".*マイナー.*",
+              "release": "minor"
+            },
+            {
+              "message": ".*メジャー.*",
+              "release": "major"
+            },
+            {
+              "message": ".*パッチ.*",
+              "release": "patch"
+            }
+          ],
+          "parserOpts": {
+            "noteKeywords": [
+              "BREAKING CHANGE",
+              "メジャー",
+              "マイナー",
+              "パッチ"
+            ]
+          }
+        }
+      ],
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/changelog",
+      "@semantic-release/git"
+    ],
+    "branches": [
+      {
+        "name": "main",
+        "prerelease": false
+      },
+      {
+        "name": "main2",
+        "prerelease": false
+      },
+      {
+        "name": "release",
+        "prerelease": false
+      }
+    ],
+    "tagFormat": "v${version}"
+  },
+  "devDependencies": {
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/commit-analyzer": "^13.0.0",
+    "@semantic-release/git": "^10.0.1",
+    "semantic-release": "^24.1.2"
+  }
+}
