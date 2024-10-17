@@ -75,18 +75,7 @@
       "@semantic-release/git"
     ],
     "branches": [
-      {
-        "name": "main",
-        "prerelease": false
-      },
-      {
-        "name": "main2",
-        "prerelease": false
-      },
-      {
-        "name": "release",
-        "prerelease": false
-      }
+      "release"
     ],
     "tagFormat": "v${version}"
   },
