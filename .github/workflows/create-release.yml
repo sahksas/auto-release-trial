@@ -1,0 +1,48 @@
+name: Create Release
+
+on:
+  push:
+    branches:
+      - main
+      - main2
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    concurrency: release-job
+
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Import GPG key
+        id: import_gpg
+        uses: crazy-max/ghaction-import-gpg@v5
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          git_user_signingkey: true
+          git_commit_gpgsign: true
+
+      - name: Switch to release branch
+        run: |
+          git fetch origin release
+          git checkout release
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3.5.1
+        with:
+          node-version: 18
+
+      - name: Install Semantic Release
+        run: npm install semantic-release @semantic-release/changelog @semantic-release/git
+
+      - name: Create release tag on release branch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: npx semantic-release
+
+      - name: Push release tags to remote
+        run: |
+          git push --tags
