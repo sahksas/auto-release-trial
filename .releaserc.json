@@ -11,7 +11,13 @@
           { "type": "BREAKING CHANGE", "release": "major" },
           { "type": "major", "release": "major" },
           { "type": "minor", "release": "minor" },
-          { "type": "patch", "release": "patch" }
+          { "type": "patch", "release": "patch" },
+          { "type": "メジャー", "release": "major" },
+          { "type": "マイナー", "release": "minor" },
+          { "type": "パッチ", "release": "patch" },
+          { "message": ".*マイナー.*", "release": "minor" },
+          { "message": ".*メジャー.*", "release": "major" },
+          { "message": ".*パッチ.*", "release": "patch" }
         ],
         "parserOpts": {
           "noteKeywords": ["BREAKING CHANGE", "メジャー", "マイナー", "パッチ"]
