@@ -40,7 +40,10 @@ jobs:
       - name: Checkout release branch
         run: |
           git fetch origin release
-          git checkout release
+          git checkout
+
+      - name: Check current branch
+        run: git branch
 
       - name: Create release tag on release branch
         env:
