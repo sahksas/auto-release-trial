@@ -2,4 +2,6 @@
 
 Hello world!
 
-feat commit
+機能改修コミット
+
+マイナーアップデート
