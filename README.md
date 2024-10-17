@@ -5,3 +5,5 @@ Hello world!
 機能改修コミット
 
 マイナーアップデート
+
+minor update
