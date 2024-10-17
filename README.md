@@ -7,3 +7,5 @@ Hello world!
 マイナーアップデート
 
 minor update
+
+patch update
