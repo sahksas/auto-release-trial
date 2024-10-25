@@ -41,3 +41,18 @@ jobs:
       - name: Push release tags to remote
         run: |
           git push --tags
+
+      - name: Checkout dev branch
+        run: |
+          git fetch origin dev
+          git checkout dev
+
+      - name: Merge release branch into dev
+        run: |
+          git merge release
+
+      - name: Push merge commit to dev
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          git push origin dev
