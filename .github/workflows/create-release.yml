@@ -50,17 +50,53 @@ jobs:
         run: |
           git push --tags
 
-      - name: Checkout dev branch
-        run: |
-          git fetch origin dev
-          git checkout dev
+  create-pr:
+    runs-on: ubuntu-latest
 
-      - name: Merge release branch into dev
-        run: |
-          git merge release
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
-      - name: Push merge commit to dev
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+      - name: Import GPG key
+        id: import_gpg
+        uses: crazy-max/ghaction-import-gpg@v5
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          git_user_signingkey: true
+          git_commit_gpgsign: true
+
+      - name: Switch to release branch
         run: |
-          git push origin dev
+          git fetch origin release
+          git checkout release
+
+      - name: Create pull request
+        uses: repo-sync/pull-request@v2
+        with:
+          source_branch: release
+          destination_branch: dev
+          pr_title: "Merge release into dev"
+          pr_body: "This PR merges changes from release into dev"
+          github_token: ${{ secrets.GH_TOKEN }}
+
+  auto-merge-pr:
+    needs: create-pr
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Merge pull request
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GH_TOKEN }}
+          script: |
+            const prNumber = context.payload.pull_request.number;
+            await github.pulls.merge({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: prNumber,
+              merge_method: 'squash',
+            });
